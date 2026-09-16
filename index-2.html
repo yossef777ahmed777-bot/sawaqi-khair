@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#168a4a">
+<meta name="description" content="سواقي الخير النموذجية - حضانة وتعليم مبكر وأنشطة للأطفال.">
+<meta name="robots" content="index,follow">
+<meta name="author" content="سواقي الخير النموذجية">
+<meta name="keywords" content="سواقي الخير النموذجية, حضانة سواقي الخير, حضانة أطفال, تعليم مبكر, أنشطة أطفال, تخاطب, KG1, KG2">
+<link rel="canonical" href="https://yossef777ahmed777-bot.github.io/sawaqi-khair/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="سواقي الخير النموذجية">
+<meta property="og:description" content="سواقي الخير النموذجية - حضانة وتعليم مبكر وأنشطة للأطفال.">
+<meta property="og:url" content="https://yossef777ahmed777-bot.github.io/sawaqi-khair/">
+<meta property="og:locale" content="ar_EG">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<title>سواقي الخير النموذجية</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#fff;color:#173b2a;line-height:1.8;overflow-x:hidden}
+header{background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-bottom:1px solid #e7efe9;position:sticky;top:0;z-index:30}
+nav{max-width:1150px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-size:21px;font-weight:800;color:#168a4a;display:flex;align-items:center;gap:6px}
+.logo span{display:inline-block;animation:sway 2.6s ease-in-out infinite}
+.links{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.links a{color:#173b2a;text-decoration:none;font-weight:700;font-size:14.5px;padding:8px 12px;border-radius:20px;transition:.25s ease;position:relative}
+.links a:hover{background:#eafff1;color:#116b3b;transform:translateY(-2px)}
+.links a.tag{background:#116b3b;color:#fff}
+.links a.tag:hover{background:#168a4a;color:#fff}
+.hero{position:relative;background:linear-gradient(135deg,#eafff1,#fff,#eafff1);background-size:300% 300%;animation:gradientMove 10s ease infinite;padding:80px 20px 95px;text-align:center;overflow:hidden}
+.hero h1{font-size:clamp(30px,6vw,52px);margin:0 0 12px;color:#116b3b}
+.hero p{font-size:19px;max-width:700px;margin:0 auto 25px}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;background:#168a4a;color:#fff;text-decoration:none;padding:12px 25px;border-radius:12px;font-weight:700;border:none;cursor:pointer;font-size:15.5px}
+.btn.outline{background:#fff;color:#168a4a;border:2px solid #168a4a}
+.btn.alert{background:#e8663f}
+section{max-width:1150px;margin:auto;padding:60px 20px;position:relative}
+h2{text-align:center;color:#116b3b;font-size:30px;margin-top:0}
+.sub{text-align:center;max-width:750px;margin:-10px auto 30px;color:#3f6350}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:#f6fbf8;border:1px solid #dceee3;border-radius:18px;padding:24px;text-align:center}
+.card h3{color:#168a4a;margin-top:0}
+.contact{text-align:center;background:#eafff1;border-radius:22px}
+footer{text-align:center;background:#116b3b;color:#fff;padding:22px}
+
+/* Floating decorative shapes across whole page */
+.float-deco{position:absolute;pointer-events:none;opacity:.35;font-size:34px;animation:floaty 6s ease-in-out infinite}
+.float-deco.d2{animation-duration:8s;animation-delay:.6s;font-size:26px}
+.float-deco.d3{animation-duration:7s;animation-delay:1.2s;font-size:30px}
+
+/* KG badges */
+.kg-badge{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;background:#168a4a;color:#fff;font-weight:800;font-size:20px;margin:0 auto 12px;animation:pulseSoft 2.4s ease-in-out infinite}
+.kg-badge.two{background:#e8663f}
+
+/* Gallery */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.gallery-grid .g{aspect-ratio:1/1;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:38px;cursor:pointer;color:#fff;transition:transform .3s ease,box-shadow .3s ease;background-size:200% 200%;animation:gradientMove 6s ease infinite}
+.gallery-grid .g:hover{transform:scale(1.06) rotate(-1deg);box-shadow:0 12px 24px rgba(17,107,59,.25)}
+.g1{background-image:linear-gradient(135deg,#168a4a,#5fd58c)}
+.g2{background-image:linear-gradient(135deg,#e8663f,#ffb08a)}
+.g3{background-image:linear-gradient(135deg,#2f8fd6,#8fd0ff)}
+.g4{background-image:linear-gradient(135deg,#a15fd5,#d6a8ff)}
+.g5{background-image:linear-gradient(135deg,#d6b32f,#ffe07a)}
+.g6{background-image:linear-gradient(135deg,#168a4a,#2f8fd6)}
+.g7{background-image:linear-gradient(135deg,#e8663f,#a15fd5)}
+.g8{background-image:linear-gradient(135deg,#2f8fd6,#168a4a)}
+.gallery-cta{text-align:center;margin-top:26px}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(10,30,20,.75);display:none;align-items:center;justify-content:center;z-index:100;animation:fadeUp .25s ease both}
+.lightbox.open{display:flex}
+.lightbox-inner{background:#fff;border-radius:20px;padding:30px;max-width:90%;width:420px;text-align:center;position:relative;animation:popIn .3s ease both}
+.lightbox-inner .emoji{font-size:70px;display:block;margin-bottom:10px}
+.lightbox-close{position:absolute;top:10px;left:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#116b3b}
+
+/* Complaints / follow-up form */
+.form-card{background:#f6fbf8;border:1px solid #dceee3;border-radius:22px;padding:32px;max-width:640px;margin:auto}
+.form-card label{display:block;font-weight:700;margin:14px 0 6px;color:#116b3b}
+.form-card input,.form-card select,.form-card textarea{width:100%;padding:11px 14px;border-radius:10px;border:1px solid #cfe6d8;font-family:inherit;font-size:15px}
+.form-card textarea{min-height:100px;resize:vertical}
+.form-note{text-align:center;color:#3f6350;font-size:14px;margin-top:14px}
+
+/* Animations */
+html{scroll-behavior:smooth}
+.hero{animation:heroIn .9s ease both}
+.hero h1{animation:fadeUp .8s .1s ease both}
+.hero p{animation:fadeUp .8s .25s ease both}
+.hero-actions{animation:fadeUp .8s .4s ease both}
+.card{transition:transform .25s ease,box-shadow .25s ease}
+.card:hover{transform:translateY(-7px);box-shadow:0 12px 28px rgba(17,107,59,.12)}
+.btn{transition:transform .2s ease,box-shadow .2s ease}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(22,138,74,.25)}
+section{animation:sectionIn .8s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes heroIn{from{opacity:0}to{opacity:1}}
+@keyframes sectionIn{from{opacity:.2;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradientMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+@keyframes sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes pulseSoft{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
+/* Floating side buttons */
+.side-buttons{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:9px}
+.side-buttons a{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;background:#168a4a;color:#fff;font-size:19px;box-shadow:0 6px 16px rgba(0,0,0,.14);transition:transform .2s ease,background .2s ease}
+.side-buttons a:hover{transform:scale(1.14)}
+.side-buttons a.alert-side{background:#e8663f}
+
+@media(max-width:700px){
+nav{align-items:flex-start;flex-direction:column}
+.links{gap:6px;font-size:13px}
+.links a{padding:6px 10px;font-size:13px}
+.hero{padding:55px 18px 75px}
+section{padding:42px 18px}
+.side-buttons{right:8px;gap:7px}
+.side-buttons a{width:41px;height:41px;font-size:17px}
+}
+</style></head>
+<body>
+<header><nav>
+<div class="logo"><span>🌿</span> سواقي الخير النموذجية</div>
+<div class="links">
+<a href="#home">الرئيسية</a>
+<a href="#about">عن الحضانة</a>
+<a href="#speech">تخاطب</a>
+<a href="#kg1">KG1</a>
+<a href="#kg2">KG2</a>
+<a href="#activities">الأنشطة</a>
+<a href="#gallery">أبرز الصور</a>
+<a href="#fees">المصروفات</a>
+<a class="tag" href="#complaints">الرد على المشاكل</a>
+<a href="#contact">تواصل معنا</a>
+</div>
+</nav></header>
+
+<div class="side-buttons" aria-label="اختصارات التواصل">
+<a href="#home" title="الرئيسية" aria-label="الرئيسية">⌂</a>
+<a href="#speech" title="تخاطب" aria-label="تخاطب">🗣️</a>
+<a href="#kg1" title="KG1" aria-label="KG1">1️⃣</a>
+<a href="#kg2" title="KG2" aria-label="KG2">2️⃣</a>
+<a href="#gallery" title="أبرز الصور" aria-label="أبرز الصور">🖼️</a>
+<a class="alert-side" href="#complaints" title="الرد على المشاكل" aria-label="الرد على المشاكل">📢</a>
+<a href="#contact" title="تواصل معنا" aria-label="تواصل معنا">💬</a>
+</div>
+
+<main>
+<section id="home" class="hero">
+<span class="float-deco" style="top:14%;left:8%">🍃</span>
+<span class="float-deco d2" style="top:65%;left:14%">⭐</span>
+<span class="float-deco d3" style="top:20%;right:10%">🎈</span>
+<span class="float-deco d2" style="top:70%;right:8%">🌸</span>
+<h1>سواقي الخير النموذجية | حضانة وتعليم مبكر</h1>
+<p>بيئة آمنة ومحفزة للتعليم المبكر والرعاية والأنشطة الممتعة للأطفال، مع أقسام تخاطب وKG1 وKG2.</p>
+<div class="hero-actions">
+<a class="btn" href="#contact">تواصل معنا</a>
+<a class="btn outline" href="#gallery">عرض أبرز الصور</a>
+</div>
+</section>
+
+<section id="about"><h2>عن الحضانة</h2>
+<p style="text-align:center;max-width:800px;margin:auto">نهتم بتقديم تجربة تعليمية مبكرة تجمع بين التعلم واللعب والأنشطة، في بيئة تشجع الطفل على الاكتشاف والتفاعل.</p>
+</section>
+
+<section id="speech">
+<h2>🗣️ قسم التخاطب</h2>
+<p class="sub">جلسات تخاطب متخصصة لتنمية مهارات النطق واللغة والتواصل لدى الأطفال، بإشراف أخصائيين مؤهلين.</p>
+<div class="grid">
+<div class="card"><h3>🔤 تقييم مبدئي</h3><p>جلسة تقييم لتحديد مستوى الطفل ووضع خطة مناسبة.</p></div>
+<div class="card"><h3>🗨️ جلسات فردية</h3><p>متابعة فردية مكثفة حسب احتياج كل طفل.</p></div>
+<div class="card"><h3>👨‍👩‍👧 متابعة مع الأهل</h3><p>إرشاد الأسرة لتطبيق التمارين في المنزل.</p></div>
+</div>
+</section>
+
+<section id="kg1">
+<h2>قسم KG1</h2>
+<div class="kg-badge">KG1</div>
+<p class="sub" style="margin-top:0">المرحلة الأولى من الروضة، تركز على التأسيس: الحروف والأرقام والمهارات الحركية واللعب الجماعي.</p>
+<div class="grid">
+<div class="card"><h3>🔡 تأسيس حروف وأرقام</h3><p>تعرف بسيط وممتع على الحروف والأرقام.</p></div>
+<div class="card"><h3>🎨 أنشطة حسية وفنية</h3><p>تنمية الحواس والإبداع باللعب والرسم.</p></div>
+<div class="card"><h3>🤝 مهارات اجتماعية</h3><p>تعلم المشاركة والتفاعل مع الأقران.</p></div>
+</div>
+</section>
+
+<section id="kg2">
+<h2>قسم KG2</h2>
+<div class="kg-badge two">KG2</div>
+<p class="sub" style="margin-top:0">المرحلة الثانية من الروضة، إعداد الطفل لمرحلة الابتدائي بمهارات أكاديمية وسلوكية أقوى.</p>
+<div class="grid">
+<div class="card"><h3>✏️ قراءة وكتابة مبدئية</h3><p>خطوات متدرجة نحو القراءة والكتابة.</p></div>
+<div class="card"><h3>➕ مهارات حسابية</h3><p>تمارين بسيطة على الأعداد والعد والجمع.</p></div>
+<div class="card"><h3>🎓 استعداد للابتدائي</h3><p>بناء الثقة والانضباط استعدادًا للمرحلة القادمة.</p></div>
+</div>
+</section>
+
+<section id="activities"><h2>الأنشطة</h2><div class="grid">
+<div class="card"><h3>🎭 أنشطة ترفيهية</h3><p>وقت ممتع وتفاعلي للأطفال.</p></div>
+<div class="card"><h3>⚽ ألعاب حركية</h3><p>أنشطة حركية مناسبة للأطفال.</p></div>
+<div class="card"><h3>🌱 أنشطة اكتشاف</h3><p>تجارب بسيطة تشجع الفضول والتعلم.</p></div></div>
+</section>
+
+<section id="gallery">
+<h2>🖼️ أبرز الصور</h2>
+<p class="sub">لمحة من أجواء الحضانة وأنشطة الأطفال اليومية.</p>
+<div class="gallery-grid">
+<div class="g g1" onclick="openLightbox('🧸','ركن الألعاب')">🧸</div>
+<div class="g g2" onclick="openLightbox('🎨','ورشة الرسم')">🎨</div>
+<div class="g g3" onclick="openLightbox('📚','وقت القصة')">📚</div>
+<div class="g g4" onclick="openLightbox('⚽','النشاط الحركي')">⚽</div>
+<div class="g g5" onclick="openLightbox('🎂','حفلات الأطفال')">🎂</div>
+<div class="g g6" onclick="openLightbox('🗣️','جلسات التخاطب')">🗣️</div>
+<div class="g g7" onclick="openLightbox('🧩','ألعاب تعليمية')">🧩</div>
+<div class="g g8" onclick="openLightbox('🌳','الفناء الخارجي')">🌳</div>
+</div>
+<div class="gallery-cta"><button class="btn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">عرض أبرز الصور</button></div>
+</section>
+
+<div class="lightbox" id="lightbox">
+<div class="lightbox-inner">
+<button class="lightbox-close" onclick="closeLightbox()">✕</button>
+<span class="emoji" id="lightboxEmoji">🧸</span>
+<h3 id="lightboxTitle">ركن الألعاب</h3>
+<p style="color:#3f6350">لإضافة صوركم الحقيقية، استبدلوا هذه البطاقات بروابط صور الحضانة.</p>
+</div>
+</div>
+
+<section id="fees">
+<h2>💳 المصروفات</h2>
+<p class="sub">أسعار تقريبية لكل مرحلة - للتفاصيل الدقيقة والعروض تواصلوا معنا عبر واتساب.</p>
+<div class="grid">
+<div class="card"><h3>KG1</h3><p>مصروفات سنوية تشمل الأنشطة والتعليم المبكر.</p><p style="font-weight:800;color:#116b3b;font-size:20px">يبدأ من ---- جنيه</p></div>
+<div class="card"><h3>KG2</h3><p>مصروفات سنوية تشمل الاستعداد لمرحلة الابتدائي.</p><p style="font-weight:800;color:#116b3b;font-size:20px">يبدأ من ---- جنيه</p></div>
+<div class="card"><h3>جلسات التخاطب</h3><p>سعر الجلسة الواحدة أو الباقة الشهرية.</p><p style="font-weight:800;color:#116b3b;font-size:20px">يبدأ من ---- جنيه</p></div>
+</div>
+<div class="gallery-cta"><a class="btn" href="https://wa.me/201144838242?text=عايز%20أعرف%20تفاصيل%20المصروفات" target="_blank" rel="noopener">اسأل عن المصروفات على واتساب</a></div>
+</section>
+
+<section id="complaints" class="contact" style="background:#fff5f0">
+<h2>📢 الرد والاستجواب على المشاكل الواردة</h2>
+<p class="sub">إذا واجهتك أي مشكلة أو استفسار، اكتب تفاصيله هنا وسيتم الرد عليك ومتابعته في أقرب وقت.</p>
+<div class="form-card">
+<label for="cName">اسم ولي الأمر</label>
+<input id="cName" type="text" placeholder="الاسم بالكامل">
+<label for="cChild">اسم الطفل والقسم</label>
+<input id="cChild" type="text" placeholder="مثال: أحمد - KG1">
+<label for="cPhone">رقم الهاتف</label>
+<input id="cPhone" type="tel" placeholder="01xxxxxxxxx">
+<label for="cType">نوع المشكلة</label>
+<select id="cType">
+<option>مشكلة إدارية</option>
+<option>مشكلة تخص القسم (تخاطب / KG1 / KG2)</option>
+<option>استفسار عن المصاريف</option>
+<option>اقتراح أو ملاحظة</option>
+<option>أخرى</option>
+</select>
+<label for="cMsg">تفاصيل المشكلة أو الاستفسار</label>
+<textarea id="cMsg" placeholder="اكتب المشكلة بالتفصيل هنا..."></textarea>
+<div style="text-align:center;margin-top:20px">
+<button class="btn alert" onclick="sendComplaint()">إرسال ومتابعة الرد</button>
+</div>
+<p class="form-note">سيتم إرسال الرسالة مباشرة عبر واتساب لفريق المتابعة للرد عليك في أقرب وقت.</p>
+</div>
+</section>
+
+<section id="contact" class="contact"><h2>تواصل معنا</h2><p>للاستفسار تواصل معنا عبر واتساب.</p><a class="btn" href="https://wa.me/201144838242" target="_blank" rel="noopener">واتساب: 01144838242</a></section>
+</main>
+<footer>© 2026 سواقي الخير النموذجية</footer>
+
+<script>if("serviceWorker"in navigator){addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(()=>{}))}</script>
+<script>
+const sections=document.querySelectorAll("main section");
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.animation="sectionIn .8s ease both";}});
+},{threshold:.12});
+sections.forEach(s=>observer.observe(s));
+
+function openLightbox(emoji,title){
+  document.getElementById("lightboxEmoji").textContent=emoji;
+  document.getElementById("lightboxTitle").textContent=title;
+  document.getElementById("lightbox").classList.add("open");
+}
+function closeLightbox(){document.getElementById("lightbox").classList.remove("open");}
+document.getElementById("lightbox").addEventListener("click",function(e){if(e.target===this)closeLightbox();});
+
+function sendComplaint(){
+  const name=document.getElementById("cName").value.trim();
+  const child=document.getElementById("cChild").value.trim();
+  const phone=document.getElementById("cPhone").value.trim();
+  const type=document.getElementById("cType").value;
+  const msg=document.getElementById("cMsg").value.trim();
+  if(!name||!msg){alert("من فضلك اكتب الاسم وتفاصيل المشكلة.");return;}
+  const text=`مشكلة/استفسار جديد من موقع سواقي الخير%0Aالاسم: ${name}%0Aالطفل/القسم: ${child}%0Aالهاتف: ${phone}%0Aالنوع: ${type}%0Aالتفاصيل: ${msg}`;
+  window.open(`https://wa.me/201144838242?text=${text}`,"_blank");
+}
+</script>
+</body></html>
