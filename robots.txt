@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /sawaqi-khair/admin.html
+Sitemap: https://yossef777ahmed777-bot.github.io/sawaqi-khair/sitemap.xml
