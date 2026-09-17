@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#168a4a">
+<title>لوحة إدارة سواقي الخير</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f3faf6;color:#173b29}
+header{background:#168a4a;color:white;padding:20px;position:sticky;top:0;z-index:3;box-shadow:0 3px 15px #0002}
+header h1{margin:0 0 6px} .wrap{max-width:1100px;margin:auto;padding:18px}
+.login,.card{background:white;border-radius:18px;padding:20px;margin:15px 0;box-shadow:0 5px 20px #00000012}
+input,textarea,button{font:inherit} input,textarea{width:100%;padding:12px;border:1px solid #ccdacf;border-radius:10px;margin:7px 0 12px}
+button{border:0;border-radius:10px;padding:11px 16px;background:#168a4a;color:#fff;cursor:pointer;margin:4px}
+button.danger{background:#c62828} button.gray{background:#607d6b}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}
+.stat{background:white;border-radius:16px;padding:18px;border-right:5px solid #168a4a;box-shadow:0 4px 15px #0001}
+.stat b{display:block;font-size:28px;margin-top:8px}
+.hidden{display:none!important} .muted{color:#66786d} .item{padding:13px;border:1px solid #e3eee7;border-radius:12px;margin:8px 0}
+.badge{display:inline-block;background:#e9f7ee;color:#168a4a;padding:5px 9px;border-radius:20px;font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>🛡️ لوحة إدارة سواقي الخير النموذجية</h1>
+<div>هذه الصفحة للإدارة فقط — أولياء الأمور لا يرونها.</div>
+</div></header>
+
+<main class="wrap">
+<section id="login" class="login">
+<h2>تسجيل دخول الإدارة</h2>
+<p class="muted">استخدم حساب الإدارة في Firebase.</p>
+<input id="email" type="email" placeholder="البريد الإلكتروني">
+<input id="password" type="password" placeholder="كلمة المرور">
+<button onclick="login()">دخول</button>
+<div id="msg"></div>
+</section>
+
+<section id="dashboard" class="hidden">
+<div class="grid">
+<div class="stat">⭐ التقييمات والمراجعات<b id="reviewsCount">0</b></div>
+<div class="stat">📊 الاستفتاء<b id="pollCount">0%</b></div>
+<div class="stat">👶 الأطفال المسجلين<b id="childrenCount">0</b></div>
+<div class="stat">📝 طلبات التسجيل/الحجز<b id="requestsCount">0</b></div>
+</div>
+
+<div class="card">
+<h2>⭐ التقييمات والمراجعات</h2>
+<div id="reviews"></div>
+</div>
+
+<div class="card">
+<h2>📊 نتائج الاستفتاء</h2>
+<div id="poll"></div>
+</div>
+
+<div class="card">
+<h2>👶 الأطفال المسجلين وتحديثاتهم</h2>
+<div id="children"></div>
+</div>
+
+<div class="card">
+<h2>📝 طلبات التسجيل/الحجز الاسترشادي</h2>
+<div id="requests"></div>
+</div>
+
+<button class="gray" onclick="logout()">تسجيل الخروج</button>
+</section>
+</main>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import {getFirestore,collection,getDocs,deleteDoc,doc} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig={
+      apiKey:"AIzaSyCJOPKsp0tI2yW-6WrpWm3pI2P4tcVZNWQ",
+      authDomain:"sawaqi-khair.firebaseapp.com",
+      projectId:"sawaqi-khair",
+      storageBucket:"sawaqi-khair.firebasestorage.app",
+      messagingSenderId:"276356382810",
+      appId:"1:276356382810:web:9b93b95962b83f48cf5863"
+    };
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+/* ضع بريد حساب الإدارة هنا. */
+const ADMIN_EMAILS=["admin@sawaqi-khair.com"];
+
+const loginBox=document.getElementById("login");
+const dash=document.getElementById("dashboard");
+const msg=document.getElementById("msg");
+
+window.login=async()=>{
+  msg.textContent="جاري تسجيل الدخول...";
+  try{
+    await signInWithEmailAndPassword(auth,email.value.trim(),password.value);
+  }catch(e){msg.textContent="بيانات الدخول غير صحيحة أو الحساب غير مسموح به.";}
+};
+window.logout=()=>signOut(auth);
+
+onAuthStateChanged(auth,async user=>{
+  if(!user){
+    loginBox.classList.remove("hidden"); dash.classList.add("hidden"); return;
+  }
+  if(!ADMIN_EMAILS.map(x=>x.toLowerCase()).includes((user.email||"").toLowerCase())){
+    msg.textContent="هذا الحساب ليس حساب إدارة.";
+    await signOut(auth); return;
+  }
+  loginBox.classList.add("hidden"); dash.classList.remove("hidden"); loadDashboard();
+});
+
+async function getData(name){
+  try{
+    const snap=await getDocs(collection(db,name));
+    return snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){return [];}
+}
+function text(v){return v==null?"":String(v)}
+function renderList(el,items,empty,delCollection){
+  el.innerHTML=items.length?items.map(x=>`<div class="item"><span class="badge">${text(x.name||x.childName||x.status||"عنصر")}</span><div>${text(x.text||x.review||x.message||x.details||x.note||"لا توجد تفاصيل إضافية")}</div><small class="muted">${text(x.createdAt||x.date||"")}</small>${delCollection?`<br><button class="danger" onclick="removeItem('${delCollection}','${x.id}')">حذف</button>`:""}</div>`).join(""):`<p class="muted">${empty}</p>`;
+}
+window.removeItem=async(c,id)=>{
+  if(!confirm("تأكيد الحذف؟"))return;
+  try{await deleteDoc(doc(db,c,id));loadDashboard();}catch(e){alert("تعذر الحذف. تأكد من صلاحيات Firestore.");}
+};
+
+async function loadDashboard(){
+  const [reviews,polls,children,requests]=await Promise.all([
+    getData("reviews"),getData("polls"),getData("children"),getData("registrationRequests")
+  ]);
+  document.getElementById("reviewsCount").textContent=reviews.length;
+  document.getElementById("childrenCount").textContent=children.length;
+  document.getElementById("requestsCount").textContent=requests.length;
+  const votes=polls.reduce((a,x)=>a+Number(x.votes||x.count||0),0);
+  document.getElementById("pollCount").textContent=votes+" تصويت";
+  renderList(document.getElementById("reviews"),reviews,"لا توجد مراجعات حالياً","reviews");
+  renderList(document.getElementById("poll"),polls,"لا توجد نتائج استفتاء محفوظة",null);
+  renderList(document.getElementById("children"),children,"لا يوجد أطفال مسجلون حالياً",null);
+  renderList(document.getElementById("requests"),requests,"لا توجد طلبات حالياً",null);
+}
+</script>
+</body>
+</html>
