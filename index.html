@@ -1391,6 +1391,47 @@ function guardParentLink(e){
   }
 }
 document.querySelectorAll('.sidebar-links a').forEach(a=>a.addEventListener('click',guardParentLink));
+</script>
 
+<!-- دفع سواقي الخير - 01110404515 -->
+<section id="pay" style="padding:30px 15px; background:#fff8e1; border-radius:20px; margin:20px; direction:rtl; font-family:Cairo; text-align:right;">
+<h2 style="text-align:center; color:#ef6c00; margin:0 0 15px 0;">💳 دفع اشتراك الحضانة</h2>
+<div style="max-width:550px; margin:auto; background:white; padding:20px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+
+<label>طريقة الدفع:</label>
+<select id="payMethod" style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; box-sizing:border-box; margin:5px 0 15px 0;">
+<option value="etisalat">اتصالات كاش</option>
+<option value="fawry">فوري - تحويل لمحفظة</option>
+</select>
+
+<div style="background:#fff3e0; padding:15px; border-radius:10px; text-align:center; border:2px dashed #ef6c00;">
+<span id="payText">حول على اتصالات كاش</span><br>
+<b style="font-size:24px; letter-spacing:1px; color:#000;">0111 040 4515</b><br>
+<small style="color:#666;">لو هتدفع من فوري: قوله عايز احول فلوس لمحفظة اتصالات على الرقم ده</small>
+</div>
+
+<input id="parentName" placeholder="اسم ولي الأمر *" style="width:100%; padding:12px; margin:12px 0 8px 0; border-radius:10px; border:1px solid #ccc; box-sizing:border-box;">
+<input id="childName" placeholder="اسم الطفل *" style="width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #ccc; box-sizing:border-box;">
+<input id="amount" type="number" placeholder="المبلغ *" style="width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #ccc; box-sizing:border-box;">
+
+<button onclick="confirmPay()" style="width:100%; background:#25D366; color:white; padding:14px; border:none; border-radius:10px; font-size:18px; font-weight:bold; margin-top:10px; cursor:pointer;">تأكيد الدفع واتساب ✅</button>
+</div>
+</section>
+
+<a href="https://wa.me/201110404515" style="position:fixed; bottom:20px; right:20px; background:#25D366; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:35px; text-decoration:none; box-shadow:0 4px 10px rgba(0,0,0,0.3); z-index:9999;">💬</a>
+
+<script>
+function confirmPay(){
+let p=document.getElementById('parentName').value.trim();
+let c=document.getElementById('childName').value.trim();
+let a=document.getElementById('amount').value.trim();
+let m=document.getElementById('payMethod').value;
+if(!p||!c||!a){alert('من فضلك اكمل البيانات');return;}
+let msg=`تأكيد اشتراك حضانة سواقي الخير%0Aالطريقة: ${m}%0Aولي الأمر: ${p}%0Aالطفل: ${c}%0Aالمبلغ: ${a} جنيه%0Aرقم التحويل: 01110404515`;
+window.open(`https://wa.me/201110404515?text=${msg}`,'_blank');
+}
+</script>
+
+<script>
 </script>
 </body></html>
