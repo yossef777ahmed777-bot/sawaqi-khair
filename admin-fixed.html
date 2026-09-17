@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>إدارة سواقي الخير النموذجية</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f3faf6;color:#173b2a}
+header{background:#116b3b;color:#fff;padding:18px;text-align:center}h1{margin:0;font-size:22px}
+.wrap{max-width:1100px;margin:auto;padding:16px}.card{background:#fff;border:1px solid #dceee3;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 5px 18px #0000000b}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.stat{background:#e9f7ef;border-radius:14px;padding:16px;text-align:center}.stat b{display:block;font-size:28px;color:#116b3b}
+button{border:0;border-radius:10px;padding:10px 14px;background:#116b3b;color:white;font-weight:700;cursor:pointer}button.secondary{background:#e1f2e8;color:#116b3b}button.danger{background:#b42318}
+input,select,textarea{width:100%;padding:10px;border:1px solid #cfe4d7;border-radius:10px;font:inherit;margin:5px 0 12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tabs button.active{background:#084c2b}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.item{border:1px solid #dceee3;border-radius:12px;padding:13px;margin:9px 0;background:#fcfffd}.muted{color:#6c7b72;font-size:13px}.ok{color:#087443;font-weight:700}.err{color:#b42318;font-weight:700}.badge{background:#e5f5eb;color:#116b3b;border-radius:20px;padding:4px 9px;font-size:12px;font-weight:700}.hidden{display:none!important}
+#login{max-width:420px;margin:60px auto}@media(max-width:600px){.wrap{padding:9px}}
+</style>
+</head>
+<body>
+<header><h1>🌿 لوحة إدارة سواقي الخير النموذجية</h1></header>
+<div class="wrap">
+<div id="login" class="card">
+<h2>🔐 دخول الإدارة</h2>
+<label>البريد الإلكتروني</label><input id="email" type="email">
+<label>كلمة السر</label><input id="password" type="password">
+<button onclick="adminLogin()">دخول</button><p id="loginMsg"></p>
+</div>
+
+<div id="app" class="hidden">
+<div class="card"><div class="row" style="justify-content:space-between"><b>لوحة الإدارة</b><div class="row"><button class="secondary" onclick="loadAll()">🔄 تحديث</button><button class="danger" onclick="logout()">خروج</button></div></div><div id="who" class="muted"></div></div>
+<div class="grid">
+<div class="stat"><b id="nChildren">0</b>الأطفال</div>
+<div class="stat"><b id="nRequests">0</b>طلبات التسجيل</div>
+<div class="stat"><b id="nComplaints">0</b>الشكاوى والاستفسارات</div>
+<div class="stat"><b id="nUpdates">0</b>تحديثات متابعة الطفل</div>
+</div>
+
+<div class="tabs">
+<button id="bChildren" class="active" onclick="tab('children')">👶 الأطفال</button>
+<button id="bRequests" onclick="tab('requests')">📋 الطلبات</button>
+<button id="bComplaints" onclick="tab('complaints')">📝 الشكاوى</button>
+<button id="bUpdates" onclick="tab('updates')">📲 متابعة الطفل</button>
+<button id="bAccounts" onclick="tab('accounts')">👤 الحسابات</button>
+</div>
+
+<section id="children" class="card"><h2>👶 بيانات الأطفال</h2><div id="childrenList"></div></section>
+<section id="requests" class="card hidden"><h2>📋 طلبات التسجيل والزيارة</h2><div id="requestsList"></div></section>
+<section id="complaints" class="card hidden"><h2>📝 الشكاوى والاستفسارات</h2><div id="complaintsList"></div></section>
+
+<section id="accounts" class="card hidden">
+<h2>👤 الحسابات المسجلة</h2>
+<p class="muted">الحسابات الظاهرة هنا هي الحسابات التي أنشأت ملفًا في مجموعة users داخل Firestore.</p>
+<div id="accountsList"></div>
+</section>
+
+<section id="updates" class="card hidden">
+<h2>📲 متابعة الطفل</h2>
+<p class="muted">أدخل UID ولي الأمر الموجود في بيانات الطفل، ثم اكتب التحديث.</p>
+<label>UID ولي الأمر</label><input id="uParentUid" placeholder="Firebase Auth UID">
+<label>الأيقونة</label><input id="uIcon" value="📌">
+<label>الوقت</label><input id="uTime" placeholder="10:30 ص">
+<label>التحديث</label><textarea id="uText" rows="4" placeholder="مثال: شارك في نشاط الرسم..."></textarea>
+<button onclick="addUpdate()">➕ إضافة تحديث</button><p id="updateMsg"></p>
+<hr><h3>التحديثات الحالية</h3><div id="updatesList"></div>
+</section>
+</div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import{getFirestore,collection,getDocs,doc,addDoc,updateDoc,deleteDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyCJOPKsp0tI2yW-6WrWm3pI2P4tcVZNWQ",authDomain:"sawaqi-khair.firebaseapp.com",projectId:"sawaqi-khair",storageBucket:"sawaqi-khair.firebasestorage.app",messagingSenderId:"276356382810",appId:"1:276356382810:web:9b93b95962b83f48cf5863"};
+const ADMIN_EMAIL="yossef777ahmed777@gmail.com";
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+
+window.adminLogin=async()=>{
+ const e=email.value.trim(),p=password.value;
+ if(!e||!p){loginMsg.className="err";loginMsg.textContent="اكتب البريد وكلمة السر.";return}
+ try{await signInWithEmailAndPassword(auth,e,p)}catch(x){loginMsg.className="err";loginMsg.textContent="فشل الدخول: "+(x.code||"خطأ")}
+};
+onAuthStateChanged(auth,async u=>{
+ if(u&&u.email===ADMIN_EMAIL){login.classList.add("hidden");appEl("app").classList.remove("hidden");who.textContent=u.email;await loadAll()}
+ else if(u){await signOut(auth);loginMsg.className="err";loginMsg.textContent="هذا الحساب ليس حساب الإدارة."}
+});
+const appEl=id=>document.getElementById(id);
+window.logout=()=>signOut(auth);
+window.tab=id=>{
+ document.querySelectorAll("#app>section").forEach(x=>x.classList.add("hidden"));
+ appEl(id).classList.remove("hidden");
+ document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+ appEl("b"+id[0].toUpperCase()+id.slice(1)).classList.add("active");
+};
+
+window.loadAll=async()=>{
+ try{
+  const [c,r,co,u,accounts]=await Promise.all([
+   getDocs(collection(db,"children")),
+   getDocs(collection(db,"registrationRequests")),
+   getDocs(collection(db,"complaints")),
+   getDocs(collection(db,"childUpdates")),
+   getDocs(collection(db,"users"))
+  ]);
+  nChildren.textContent=c.size;nRequests.textContent=r.size;nComplaints.textContent=co.size;nUpdates.textContent=u.size;
+  renderChildren(c);renderRequests(r);renderComplaints(co);renderUpdates(u);renderAccounts(accounts);
+ }catch(e){alert("تعذر تحميل البيانات: "+e.message)}
+};
+function renderChildren(s){
+ childrenList.innerHTML=s.empty?'<p class="muted">لا توجد بيانات أطفال.</p>':s.docs.map(x=>{let d=x.data();return `<div class="item"><b>👶 ${esc(d.name||"بدون اسم")}</b> <span class="badge">${esc(d.section||"غير محدد")}</span><p>تاريخ الميلاد: ${esc(d.dob||"غير محدد")}</p><p>ولي الأمر: ${esc(d.parentEmail||"")}</p>${d.notes?`<p>ملاحظات: ${esc(d.notes)}</p>`:""}<div class="muted">UID: ${esc(d.parentUid||x.id)}</div></div>`}).join("");
+}
+function renderRequests(s){
+ requestsList.innerHTML=s.empty?'<p class="muted">لا توجد طلبات.</p>':s.docs.map(x=>{
+  let d=x.data(),status=d.status||"new";
+  return `<div class="item">
+    <b>📅 ${esc(d.name||"طلب زيارة")}</b>
+    <p>الطفل/العمر: ${esc(d.child||"")}</p>
+    <p>الهاتف: ${esc(d.phone||"")}</p>
+    <p>الموعد: ${esc(d.date||"غير محدد")}</p>
+    <p>الحالة: <span class="badge">${esc(status)}</span></p>
+    <div class="row">
+      <button onclick="statusChange('registrationRequests','${x.id}','مقبول')">✅ موافقة</button>
+      <button class="danger" onclick="statusChange('registrationRequests','${x.id}','مرفوض')">❌ رفض</button>
+      <button class="secondary" onclick="statusChange('registrationRequests','${x.id}','تم التواصل')">📞 تم التواصل</button>
+      <button class="danger" onclick="removeItem('registrationRequests','${x.id}')">🗑️ حذف</button>
+    </div>
+  </div>`
+ }).join("");
+}
+
+function renderComplaints(s){
+ complaintsList.innerHTML=s.empty?'<p class="muted">لا توجد شكاوى.</p>':s.docs.map(x=>{let d=x.data();return `<div class="item"><b>📝 ${esc(d.name||"ولي أمر")}</b><p>الطفل/القسم: ${esc(d.child||"")}</p><p>الهاتف: ${esc(d.phone||"")}</p><p>النوع: ${esc(d.type||"استفسار")}</p><p>${esc(d.msg||"")}</p><p>الحالة: <span class="badge">${esc(d.status||"new")}</span></p><div class="row"><button onclick="statusChange('complaints','${x.id}','تم الرد')">تم الرد</button><button class="danger" onclick="removeItem('complaints','${x.id}')">حذف</button></div></div>`}).join("");
+}
+function renderUpdates(s){
+ updatesList.innerHTML=s.empty?'<p class="muted">لا توجد تحديثات.</p>':s.docs.map(x=>{let d=x.data();return `<div class="item"><b>${esc(d.icon||"📌")} ${esc(d.time||"تحديث")}</b><p>${esc(d.text||"")}</p><div class="muted">UID: ${esc(d.parentUid||"")}</div><button class="danger" onclick="removeItem('childUpdates','${x.id}')">حذف</button></div>`}).join("");
+}
+function renderAccounts(s){
+ const box=document.getElementById("accountsList");
+ if(!box)return;
+ if(s.empty){box.innerHTML='<p class="muted">لا توجد حسابات محفوظة في users حتى الآن.</p>';return}
+ box.innerHTML=s.docs.map(x=>{
+  const d=x.data();
+  return `<div class="item">
+    <div class="row" style="justify-content:space-between">
+      <b>👤 ${esc(d.name||"بدون اسم")}</b>
+      <span class="badge">${esc(d.email||"بدون بريد")}</span>
+    </div>
+    <p>📱 الهاتف: ${esc(d.phone||"غير مسجل")}</p>
+    <p>📧 البريد: ${esc(d.email||"غير مسجل")}</p>
+    <div class="muted">UID: ${esc(d.uid||x.id)}</div>
+    <p class="muted">ملاحظة: هذه قائمة ملفات users، وليست قائمة Firebase Authentication الكاملة.</p>
+  </div>`
+ }).join("");
+}
+
+window.statusChange=async(c,id,status)=>{try{await updateDoc(doc(db,c,id),{status,updatedAt:serverTimestamp()});await loadAll()}catch(e){alert(e.message)}};
+window.removeItem=async(c,id)=>{if(!confirm("هل تريد الحذف؟"))return;try{await deleteDoc(doc(db,c,id));await loadAll()}catch(e){alert(e.message)}};
+window.addUpdate=async()=>{
+ const uid=uParentUid.value.trim(),icon=uIcon.value.trim()||"📌",time=uTime.value.trim()||"تحديث",text=uText.value.trim();
+ if(!uid||!text){updateMsg.className="err";updateMsg.textContent="اكتب UID والتحديث.";return}
+ try{await addDoc(collection(db,"childUpdates"),{parentUid:uid,icon,time,text,createdAt:serverTimestamp()});updateMsg.className="ok";updateMsg.textContent="تمت إضافة التحديث ✅";uText.value="";await loadAll()}catch(e){updateMsg.className="err";updateMsg.textContent="تعذر الإضافة: "+e.message}
+};
+</script>
+</body>
+</html>
