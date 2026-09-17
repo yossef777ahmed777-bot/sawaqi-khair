@@ -1404,11 +1404,7 @@ document.querySelectorAll('.sidebar-links a').forEach(a=>a.addEventListener('cli
 <option value="fawry">فوري - تحويل لمحفظة</option>
 </select>
 
-<div style="background:#fff3e0; padding:15px; border-radius:10px; text-align:center; border:2px dashed #ef6c00;">
-<span id="payText">حول على اتصالات كاش</span><br>
-<b style="font-size:24px; letter-spacing:1px; color:#000;">0111 040 4515</b><br>
-<small style="color:#666;">لو هتدفع من فوري: قوله عايز احول فلوس لمحفظة اتصالات على الرقم ده</small>
-</div>
+
 
 <div id="payModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:99999;justify-content:center;align-items:center">
 <div style="background:#fff;padding:25px;border-radius:15px;max-width:380px;width:90%;text-align:center">
@@ -1426,7 +1422,7 @@ var currentPayName=""; var currentPayPrice="";
 function payNow(name,price){currentPayName=name;currentPayPrice=price;document.getElementById('modalDetails').innerHTML=name+" - "+price+" جنيه";document.getElementById('payModal').style.display='flex';}
 function confirmModalPay(){var p=document.getElementById('mParentName').value;var c=document.getElementById('mChildName').value;if(!p||!c){alert('اكتب اسم ولي الأمر واسم الطفل');return;}var msg="تأكيد دفع سواقي الخير%0Aولي الأمر: "+p+"%0Aالطفل: "+c+"%0Aالباقة: "+currentPayName+"%0Aالمبلغ: "+currentPayPrice+"%0Aكاش: 01110404515";window.open("https://wa.me/201110404515?text="+msg,"_blank");document.getElementById('payModal').style.display='none';}
 </script>
-</body></html>
+
 
 
 </body></html>
