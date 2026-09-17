@@ -1410,35 +1410,23 @@ document.querySelectorAll('.sidebar-links a').forEach(a=>a.addEventListener('cli
 <small style="color:#666;">لو هتدفع من فوري: قوله عايز احول فلوس لمحفظة اتصالات على الرقم ده</small>
 </div>
 
-<input id="parentName" placeholder="اسم ولي الأمر *" style="width:100%; padding:12px; margin:12px 0 8px 0; border-radius:10px; border:1px solid #ccc; box-sizing:border-box;">
-<input id="childName" placeholder="اسم الطفل *" style="width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #ccc; box-sizing:border-box;">
-<input id="amount" type="number" placeholder="المبلغ *" style="width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #ccc; box-sizing:border-box;">
-
-<button onclick="confirmPay()" style="width:100%; background:#25D366; color:white; padding:14px; border:none; border-radius:10px; font-size:18px; font-weight:bold; margin-top:10px; cursor:pointer;">تأكيد الدفع واتساب ✅</button>
+<div id="payModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:99999;justify-content:center;align-items:center">
+<div style="background:#fff;padding:25px;border-radius:15px;max-width:380px;width:90%;text-align:center">
+<h3>💳 طريقة الدفع</h3>
+<p id="modalDetails" style="font-size:18px;font-weight:bold"></p>
+<input id="mParentName" placeholder="اسم ولي الأمر" style="width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px">
+<input id="mChildName" placeholder="اسم الطفل" style="width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px">
+<div style="background:#f0f9ff;padding:12px;border-radius:10px;margin:12px 0;text-align:right">✅ اتصالات كاش: <b>01110404515</b></div>
+<button onclick="confirmModalPay()" style="width:100%;background:#25D366;color:#fff;padding:12px;border:0;border-radius:10px;font-weight:bold">تأكيد وفتح واتساب 📲</button>
+<button onclick="document.getElementById('payModal').style.display='none'" style="margin-top:10px;background:#eee;padding:8px 20px;border:0;border-radius:8px">إغلاق</button>
 </div>
-</section>
-
-<a href="https://wa.me/201110404515" style="position:fixed; bottom:20px; right:20px; background:#25D366; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:35px; text-decoration:none; box-shadow:0 4px 10px rgba(0,0,0,0.3); z-index:9999;">💬</a>
-
+</div>
 <script>
-function payNow(name, price){
-  var a=document.getElementById('amount');
-  var c=document.getElementById('childName');
-  if(a) a.value=price;
-  if(c) c.value=name;
-  document.getElementById('pay').scrollIntoView({behavior:'smooth'});
-}
-function confirmPay(){
-let p=document.getElementById('parentName').value.trim();
-let c=document.getElementById('childName').value.trim();
-let a=document.getElementById('amount').value.trim();
-let m=document.getElementById('payMethod').value;
-if(!p||!c||!a){alert('من فضلك اكمل البيانات');return;}
-let msg=`تأكيد اشتراك حضانة سواقي الخير%0Aالطريقة: ${m}%0Aولي الأمر: ${p}%0Aالطفل: ${c}%0Aالمبلغ: ${a} جنيه%0Aرقم التحويل: 01110404515`;
-window.open(`https://wa.me/201110404515?text=${msg}`,'_blank');
-}
+var currentPayName=""; var currentPayPrice="";
+function payNow(name,price){currentPayName=name;currentPayPrice=price;document.getElementById('modalDetails').innerHTML=name+" - "+price+" جنيه";document.getElementById('payModal').style.display='flex';}
+function confirmModalPay(){var p=document.getElementById('mParentName').value;var c=document.getElementById('mChildName').value;if(!p||!c){alert('اكتب اسم ولي الأمر واسم الطفل');return;}var msg="تأكيد دفع سواقي الخير%0Aولي الأمر: "+p+"%0Aالطفل: "+c+"%0Aالباقة: "+currentPayName+"%0Aالمبلغ: "+currentPayPrice+"%0Aكاش: 01110404515";window.open("https://wa.me/201110404515?text="+msg,"_blank");document.getElementById('payModal').style.display='none';}
 </script>
-
+</body></html>
 
 
 </body></html>
