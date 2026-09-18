@@ -1633,12 +1633,11 @@ function applyLanguage(){
         if(txt.includes(ar)){
           el.innerText = isEnglish? txt.replace(ar, languageMap[ar]) : el.getAttribute("data-ar") || txt;
           if(!el.getAttribute("data-ar")) el.setAttribute("data-ar", ar);
-          // احفظ الأصلي
-          if(isEnglish &&!el.getAttribute("data-ar-full")) el.setAttribute("data-ar-full", txt);
-      <script>
-languageMap={
-"عن":"About the Nursery",
-"قسم":"Speech Department",
+          </script>
+<script>
+let languageMap={
+"عن الحضانة":"About the Nursery",
+"قسم التخاطب":"Speech Department",
 "KG1":"KG1 Dept",
 "KG2":"KG2 Dept"
 };
@@ -1661,5 +1660,6 @@ toggleLanguage();
 }
 });
 </script>
-
+</body>
+</html>
 </body></html>
