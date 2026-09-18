@@ -359,7 +359,30 @@ function renderAccounts(arr,term){
   </div>`;
  }).join("");
 }
+// ===== إضافة إجمالي الاشتراكات - بدون مسح أي حاجة =====
+(async()=>{
+  // اعمل كارت الإجمالي بالجافاسكريبت عشان متمسحش حاجة في الـ HTML
+  let totalBox = document.createElement('div');
+  totalBox.id='swaqi-money-box';
+  totalBox.style.cssText='background:#065f46;color:#fff;padding:15px;border-radius:16px;text-align:center;margin:15px 0';
+  totalBox.innerHTML=`<div style="font-size:28px;font-weight:bold"><span id="swaqiTotalNow">0</span> جنيه</div><div>إجمالي الاشتراكات</div><div style="font-size:12px;margin-top:5px">KG1: <span id="swaqiC1">0</span> | KG2: <span id="swaqiC2">0</span> | جلسات: <span id="swaqiC3">0</span></div>`;
+  document.body.insertBefore(totalBox, document.body.firstChild.nextSibling);
 
+  try{
+    const snap = await getDocs(collection(db,"payments"));
+    let total=0,kg1=0,kg2=0,ses=0;
+    snap.forEach(d=>{
+      let x=d.data(); total+=parseInt(x.price||0);
+      if((x.bundle||'').includes('KG1')) kg1++;
+      if((x.bundle||'').includes('KG2')) kg2++;
+      if((x.bundle||'').includes('التخاطب')) ses++;
+    });
+    document.getElementById('swaqiTotalNow').innerText=total;
+    document.getElementById('swaqiC1').innerText=kg1;
+    document.getElementById('swaqiC2').innerText=kg2;
+    document.getElementById('swaqiC3').innerText=ses;
+  }catch(e){ console.log("لسه مفيش payments"); }
+})();
 window.statusChange=async(c,id,status)=>{try{await updateDoc(doc(db,c,id),{status,updatedAt:serverTimestamp()});await loadAll()}catch(e){alert(e.message)}};
 window.removeItem=async(c,id)=>{if(!confirm("هل تريد الحذف؟"))return;try{await deleteDoc(doc(db,c,id));await loadAll()}catch(e){alert(e.message)}};
 window.addUpdate=async()=>{
