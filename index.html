@@ -1642,16 +1642,20 @@ let languageMap={
 "KG2":"KG2 Dept"
 };
 let isEnglish=localStorage.getItem("nursery_lang")==="en";
+let isEnglish=localStorage.getItem("nursery_lang")==="en";
 function applyLanguage(){
 document.documentElement.dir=isEnglish?"ltr":"rtl";
 let b=document.querySelector(".lang-switch");
 if(b) b.innerText=isEnglish?"🌐 عربي | EN":"🌐 EN | عربي";
+// هنا الترجمة بتحصل
+document.querySelectorAll("h2").forEach(el=>{
+let t=el.innerText.trim();
+if(languageMap[t]){
+if(!el.dataset.ar) el.dataset.ar=t;
+el.innerText=isEnglish?languageMap[t]:el.dataset.ar;
 }
-function toggleLanguage(){
-isEnglish=!isEnglish;
-localStorage.setItem("nursery_lang",isEnglish?"en":"ar");
-location.reload();
-}
+});
+  }
 applyLanguage();
 document.addEventListener("click",function(e){
 if(e.target.innerText.includes("عربي")||e.target.innerText.includes("EN")){
