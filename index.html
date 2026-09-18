@@ -1627,27 +1627,18 @@ function applyLanguage(){
   // ترجمة كل النصوص
   document.querySelectorAll("h1,h2,h3,p,span,a,button,div").forEach(el=>{
     if(el.children.length === 0 && el.innerText.trim()){
-      let txt = el.innerText.trim();
-      // دور على الترجمة
-      for(let ar in languageMap){
-        if(txt.includes(ar)){
-          el.innerText = isEnglish? txt.replace(ar, languageMap[ar]) : el.getAttribute("data-ar") || txt;
-          if(!el.getAttribute("data-ar")) el.setAttribute("data-ar", ar);
-          </script>
-<script>
+      <script>
 let languageMap={
 "عن الحضانة":"About the Nursery",
 "قسم التخاطب":"Speech Department",
-"KG1":"KG1 Dept",
-"KG2":"KG2 Dept"
+"KG1":"KG1 Department",
+"KG2":"KG2 Department"
 };
-let isEnglish=localStorage.getItem("nursery_lang")==="en";
 let isEnglish=localStorage.getItem("nursery_lang")==="en";
 function applyLanguage(){
 document.documentElement.dir=isEnglish?"ltr":"rtl";
 let b=document.querySelector(".lang-switch");
 if(b) b.innerText=isEnglish?"🌐 عربي | EN":"🌐 EN | عربي";
-// هنا الترجمة بتحصل
 document.querySelectorAll("h2").forEach(el=>{
 let t=el.innerText.trim();
 if(languageMap[t]){
@@ -1655,7 +1646,12 @@ if(!el.dataset.ar) el.dataset.ar=t;
 el.innerText=isEnglish?languageMap[t]:el.dataset.ar;
 }
 });
-  }
+}
+function toggleLanguage(){
+isEnglish=!isEnglish;
+localStorage.setItem("nursery_lang",isEnglish?"en":"ar");
+location.reload();
+}
 applyLanguage();
 document.addEventListener("click",function(e){
 if(e.target.innerText.includes("عربي")||e.target.innerText.includes("EN")){
