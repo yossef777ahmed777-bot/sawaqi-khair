@@ -1410,10 +1410,36 @@ document.querySelectorAll('.sidebar-links a').forEach(a=>a.addEventListener('cli
 </div>
 <script>
 var currentPayName=""; var currentPayPrice="";
-function payNow(name,price){currentPayName=name;currentPayPrice=price;document.getElementById('modalDetails').innerHTML=name+" - "+price+" جنيه";document.getElementById('payModal').style.display='flex';}
-function confirmModalPay(){var p=document.getElementById('mParentName').value;var c=document.getElementById('mChildName').value;if(!p||!c){alert('اكتب اسم ولي الأمر واسم الطفل');return;}var msg="تأكيد دفع سواقي الخير%0Aولي الأمر: "+p+"%0Aالطفل: "+c+"%0Aالباقة: "+currentPayName+"%0Aالمبلغ: "+currentPayPrice+"%0Aكاش: 01110404515";window.open("https://wa.me/201110404515?text="+msg,"_blank");document.getElementById('payModal').style.display='none';}
+function payNow(name,price){
+  currentPayName=name;
+  currentPayPrice=price;
+  document.getElementById('modalDetails').innerHTML=name+" - "+price+" جنيه";
+  var m=document.getElementById('payModal');
+  m.style.display='flex';
+  m.style.position='fixed';
+  m.style.top='0'; m.style.left='0';
+  m.style.width='100%'; m.style.height='100%';
+  m.style.background='rgba(0,0,0,0.6)';
+  m.style.justifyContent='center';
+  m.style.alignItems='center';
+  m.style.zIndex='9999';
+}
+function confirmModalPay(){
+  var p=document.getElementById('mParentName').value;
+  var c=document.getElementById('mChildName').value;
+  if(!p||!c){alert('اكتب اسم ولي الأمر واسم الطفل');return;}
+  var msg="تأكيد دفع حضانة سواقي الخير%0Aولي الأمر: "+p+"%0Aالطفل: "+c+"%0Aالباقة: "+currentPayName+"%0Aالمبلغ: "+currentPayPrice+"%0Aكاش: 01110404515";
+  window.open("https://wa.me/201110404515?text="+msg,"_blank");
+  document.getElementById('payModal').style.display='none';
+}
+// ده اللي هيشغل كل زراير ادفع اللي فوق اوتوماتيك
+document.querySelectorAll('button').forEach(function(btn){
+  var t=btn.innerText;
+  if(t.includes('200')) btn.setAttribute('onclick',"payNow('KG1','200')");
+  if(t.includes('300')) btn.setAttribute('onclick',"payNow('KG2','300')");
+  if(t.includes('500')) btn.setAttribute('onclick',"payNow('جلسات التخاطب','500')");
+});
 </script>
-
 
 
 </body></html>
