@@ -1623,12 +1623,9 @@ function applyLanguage(){
   document.body.classList.toggle("en", isEnglish);
   const btn = document.querySelector(".lang-switch,.lang-toggle");
   if(btn) btn.innerText = isEnglish? "🌐 عربي | EN" : "🌐 EN | عربي";
-
-  // ترجمة كل النصوص
-  document.querySelectorAll("h1,h2,h3,p,span,a,button,div").forEach(el=>{
-<script>
 let languageMap={
 "عن الحضانة":"About the Nursery",
+...
 "قسم التخاطب":"Speech Department",
 "KG1":"KG1 Department",
 "KG2":"KG2 Department",
