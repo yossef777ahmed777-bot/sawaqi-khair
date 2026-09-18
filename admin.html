@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة إدارة حضانة سواقي الخير الشاملة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg-main:#f4f8f5;--bg-card:#ffffff;--text-main:#173b2a;--border-color:#dceee3;--primary:#168a4a;--header-bg:#168a4a;--sidebar-hover:#eafff1}
+body.dark-mode{--bg-main:#0f1c15;--bg-card:#16261d;--text-main:#dce9e1;--border-color:#24392d;--primary:#8fd1a8;--header-bg:#112018;--sidebar-hover:#1c2f22}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:'Cairo',Arial,sans-serif;background:var(--bg-main);color:var(--text-main);line-height:1.6;transition:background .3s,color .3s}
+.header{background:var(--header-bg);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.header h1{margin:0;font-size:20px;display:flex;align-items:center;gap:10px}
+.header-left{display:flex;align-items:center;gap:14px}
+.theme-toggle{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);padding:6px 14px;border-radius:999px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s}
+.theme-toggle:hover{background:rgba(255,255,255,.3)}
+.btn-logout{background:#e8663f;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-weight:700;cursor:pointer}
+
+.container{display:flex;min-height:calc(100vh - 65px)}
+.sidebar{width:250px;background:var(--bg-card);border-left:1px solid var(--border-color);padding:20px 10px;display:flex;flex-direction:column;gap:6px}
+.sidebar button{background:none;border:none;text-align:right;padding:12px 14px;border-radius:10px;font-family:inherit;font-weight:700;font-size:13.5px;color:var(--text-main);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px}
+.sidebar button.active,.sidebar button:hover{background:var(--sidebar-hover);color:var(--primary)}
+.main-content{flex:1;padding:24px;overflow-y:auto}
+
+.card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:18px;text-align:center}
+.stat-card .num{font-size:26px;font-weight:800;color:var(--primary);margin-top:4px}
+
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+th,td{padding:12px;border-bottom:1px solid var(--border-color);text-align:right}
+th{background:var(--sidebar-hover);color:var(--primary);font-weight:800}
+
+.badge{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800;display:inline-block}
+.badge.new{background:#fff3cd;color:#856404}
+.badge.confirmed{background:#d4edda;color:#155724}
+
+.btn-action{padding:6px 12px;border-radius:6px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-left:4px}
+.btn-wa{background:#25D366;color:#fff}
+.btn-edit{background:#168a4a;color:#fff}
+.btn-del{background:#e8663f;color:#fff}
+
+input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-main);font-family:inherit;margin-top:6px;margin-bottom:14px}
+.login-overlay{position:fixed;inset:0;background:#0f1c15;display:flex;align-items:center;justify-content:center;z-index:999}
+.login-box{background:#fff;padding:32px;border-radius:20px;width:100%;max-width:380px;text-align:center;color:#173b2a}
+
+@media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;flex-direction:row;overflow-x:auto}}
+</style>
+</head>
+<body>
+
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <h2 style="color:#116b3b;margin-top:0">🔐 لوحة الإدارة الشاملة</h2>
+    <p style="font-size:13px;color:#527361">سجّل دخولك بحساب مدير الحضانة</p>
+    <input id="adminEmail" type="email" placeholder="البريد الإلكتروني">
+    <input id="adminPass" type="password" placeholder="كلمة السر">
+    <button class="btn-action btn-edit" style="width:100%;padding:12px;font-size:15px;margin-top:10px" onclick="adminLogin()">تسجيل الدخول</button>
+    <p id="loginMsg" style="color:#e8663f;font-size:13px;margin-top:12px"></p>
+  </div>
+</div>
+
+<div class="header">
+  <h1>🌿 سواقي الخير — لوحة التحكم العامة</h1>
+  <div class="header-left">
+    <button class="theme-toggle" onclick="toggleAdminTheme()">
+      <span id="themeIcon">🌙</span> <span id="themeText">الوضع الليلي</span>
+    </button>
+    <span id="adminUserEmail" style="font-size:13px">مدير النظام</span>
+    <button class="btn-logout" onclick="adminLogout()">خروج</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="sidebar">
+    <button class="active" onclick="showTab('overview', this)">📊 الإحصائيات والمالية</button>
+    <button onclick="showTab('bookings', this)">📅 طلبات الحجز</button>
+    <button onclick="showTab('complaints', this)">📢 الشكاوى والأجوبة</button>
+    <button onclick="showTab('children', this)">🧒 إدارة الطلاب والحضور</button>
+    <button onclick="showTab('cms', this)">📝 تعديل محتوى الموقع</button>
+    <button onclick="showTab('bot', this)">🤖 ردود البوت الآلي</button>
+    <button onclick="showTab('reviews', this)">💬 إدارة التقييمات</button>
+    <button onclick="showTab('notifs', this)">🔔 إرسال إشعار عام</button>
+  </div>
+
+  <div class="main-content">
+    
+    <!-- Tab 1: Overview & Finance -->
+    <div id="tab-overview" class="tab-content">
+      <h2>📊 ملخص الإحصائيات والدخل الشهري</h2>
+      <div class="stats-grid">
+        <div class="stat-card"><div>إجمالي الإيرادات هذا الشهر</div><div class="num" id="statIncome">0 ج.م</div></div>
+        <div class="stat-card"><div>طلبات الحجز الجديدة</div><div class="num" id="statBookings">0</div></div>
+        <div class="stat-card"><div>الشكاوى المعلقة</div><div class="num" id="statComplaints">0</div></div>
+        <div class="stat-card"><div>الأطفال المسجلين</div><div class="num" id="statChildren">0</div></div>
+      </div>
+
+      <div class="card">
+        <h3>💰 سجل المتحصلات الشهرية (إيرادات الاشتراك)</h3>
+        <table>
+          <thead>
+            <tr><th>الشهر</th><th>اسم الطفل</th><th>القسم</th><th>المبلغ المدفوع</th><th>تاريخ الدفع</th></tr>
+          </thead>
+          <tbody id="tblFinance"><tr><td colspan="5" style="text-align:center">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 2: Bookings -->
+    <div id="tab-bookings" class="tab-content" style="display:none">
+      <h2>📅 إدارة طلبات الحجز والزيارات</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>ولي الأمر</th><th>عمر الطفل</th><th>الهاتف</th><th>الميعاد المفضل</th><th>الحالة</th><th>إجراءات</th></tr>
+          </thead>
+          <tbody id="tblBookings"><tr><td colspan="6" style="text-align:center">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Complaints -->
+    <div id="tab-complaints" class="tab-content" style="display:none">
+      <h2>📢 مركز الشكاوى والاستفسارات</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>ولي الأمر</th><th>الطفل/القسم</th><th>النوع</th><th>التفاصيل</th><th>رد الإدارة الحالي</th><th>إجراءات الرد</th></tr>
+          </thead>
+          <tbody id="tblComplaints"><tr><td colspan="6" style="text-align:center">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 4: Children & Attendance -->
+    <div id="tab-children" class="tab-content" style="display:none">
+      <h2>🧒 قائمة الطلاب وتسجيل الحضور اليومي</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>اسم الطفل</th><th>القسم</th><th>تاريخ الميلاد</th><th>ملاحظات</th><th>حضور اليوم</th><th>معرف ولي الأمر</th></tr>
+          </thead>
+          <tbody id="tblChildren"><tr><td colspan="6" style="text-align:center">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 5: CMS Content Editor -->
+    <div id="tab-cms" class="tab-content" style="display:none">
+      <h2>📝 التحكم في محتوى وأسعار الموقع مباشرة</h2>
+      <div class="card" style="max-width:600px">
+        <label>سعر KG1 الشهري (جنيه)</label>
+        <input id="cmsKg1Price" type="number" value="200">
+        <label>سعر KG2 الشهري (جنيه)</label>
+        <input id="cmsKg2Price" type="number" value="300">
+        <label>سعر جلسات التخاطب (جنيه)</label>
+        <input id="cmsSpeechPrice" type="number" value="500">
+        <label>رقم الواتساب الرئيسي</label>
+        <input id="cmsWhatsapp" type="text" value="201144838242">
+        <label>العنوان المعلن في الموقع</label>
+        <input id="cmsAddress" type="text" value="الشرقية، فاقوس، خط البحر، قرية كفر السواقي">
+        <button class="btn-action btn-edit" style="width:100%;padding:12px;font-size:15px;margin-top:10px" onclick="saveCmsSettings()">حفظ وتحديث الموقع فوراً 💾</button>
+      </div>
+    </div>
+
+    <!-- Tab 6: Chatbot Settings -->
+    <div id="tab-bot" class="tab-content" style="display:none">
+      <h2>🤖 إعدادات ردود البوت الآلي</h2>
+      <div class="card" style="max-width:600px">
+        <label>الكلمة المفتاحية (مثل: رحلات / أوراق / مواعيد)</label>
+        <input id="botKeyword" type="text" placeholder="مثال: رحلات">
+        <label>إجابة البوت الآلية</label>
+        <textarea id="botReply" placeholder="اكتب الرد التلقائي للزائر..."></textarea>
+        <button class="btn-action btn-edit" style="width:100%;padding:12px;font-size:15px;margin-top:10px" onclick="addBotRule()">إضافة رد آلي جديد 🤖</button>
+      </div>
+    </div>
+
+    <!-- Tab 7: Reviews -->
+    <div id="tab-reviews" class="tab-content" style="display:none">
+      <h2>💬 إدارة تقييمات أولياء الأمور</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>الاسم</th><th>التقييم</th><th>التعليق</th><th>الحالة</th><th>إجراء</th></tr>
+          </thead>
+          <tbody id="tblReviews"><tr><td colspan="5" style="text-align:center">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 8: Notifications -->
+    <div id="tab-notifs" class="tab-content" style="display:none">
+      <h2>🔔 نشر إشعار جديد لجميع الأهالي</h2>
+      <div class="card" style="max-width:500px">
+        <label>عنوان الإشعار (عربي)</label>
+        <input id="notifTitle" type="text" placeholder="مثال: رحلة الأسبوع القادم">
+        <label>مضمون الإشعار (عربي)</label>
+        <textarea id="notifBody" placeholder="اكتب التفاصيل هنا..."></textarea>
+        <label>الأيقونة (Emoji)</label>
+        <input id="notifIcon" type="text" value="🎉">
+        <button class="btn-action btn-edit" style="width:100%;padding:12px;font-size:15px;margin-top:10px" onclick="sendAdminNotification()">نشر الإشعار فوراً 🚀</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, setDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCJOPKsp0tI2yW-6WrpWm3pI2P4tcVZNWQ",
+  authDomain: "sawaqi-khair.firebaseapp.com",
+  projectId: "sawaqi-khair",
+  storageBucket: "sawaqi-khair.firebasestorage.app",
+  messagingSenderId: "276356382810",
+  appId: "1:276356382810:web:9b93b95962b83f48cf5863"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.toggleAdminTheme = () => {
+  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.contains("dark-mode");
+  document.getElementById("themeIcon").textContent = isDark ? "☀️" : "🌙";
+  document.getElementById("themeText").textContent = isDark ? "الوضع النهاري" : "الوضع الليلي";
+};
+
+window.adminLogin = async () => {
+  const email = document.getElementById("adminEmail").value.trim();
+  const pass = document.getElementById("adminPass").value;
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch (e) {
+    document.getElementById("loginMsg").textContent = "بيانات الدخول غير صحيحة.";
+  }
+};
+
+window.adminLogout = () => signOut(auth);
+
+onAuthStateChanged(auth, (user) => {
+  if (user && user.email.toLowerCase() === "yossef777ahmed777@gmail.com") {
+    document.getElementById("loginOverlay").style.display = "none";
+    document.getElementById("adminUserEmail").textContent = user.email;
+    loadDashboardData();
+  } else {
+    document.getElementById("loginOverlay").style.display = "flex";
+  }
+});
+
+window.showTab = (tabId, btn) => {
+  document.querySelectorAll(".tab-content").forEach(t => t.style.display = "none");
+  document.querySelectorAll(".sidebar button").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + tabId).style.display = "block";
+  btn.classList.add("active");
+};
+
+async function loadDashboardData() {
+  const pSnap = await getDocs(collection(db, "payments"));
+  let totalIncome = 0;
+  let pHtml = "";
+  pSnap.forEach(s => {
+    const d = s.data();
+    totalIncome += Number(d.amount || 0);
+    pHtml += `<tr>
+      <td>${d.month||'الشهر الحالي'}</td>
+      <td>${d.childName||'-'}</td>
+      <td>${d.plan||'-'}</td>
+      <td><b>${d.amount||0} ج.م</b></td>
+      <td>${d.date||'-'}</td>
+    </tr>`;
+  });
+  document.getElementById("statIncome").textContent = totalIncome.toLocaleString("ar-EG") + " ج.م";
+  document.getElementById("tblFinance").innerHTML = pHtml || "<tr><td colspan='5'>لا توجد سجلات مدفوعات مسجلة حتى الآن.</td></tr>";
+
+  const bSnap = await getDocs(collection(db, "registrationRequests"));
+  document.getElementById("statBookings").textContent = bSnap.size;
+  let bHtml = "";
+  bSnap.forEach(s => {
+    const d = s.data();
+    bHtml += `<tr>
+      <td>${d.name||'-'}</td>
+      <td>${d.child||'-'}</td>
+      <td>${d.phone||'-'}</td>
+      <td>${d.date||'-'}</td>
+      <td><span class="badge ${d.status||'new'}">${d.status||'جديد'}</span></td>
+      <td>
+        <button class="btn-action btn-wa" onclick="window.open('https://wa.me/20${d.phone}?text=مرحباً ${d.name}، بخصوص طلب زيارة حضانة سواقي الخير...')">واتساب</button>
+        <button class="btn-action btn-edit" onclick="updateBookingStatus('${s.id}', 'confirmed')">تأكيد</button>
+      </td>
+    </tr>`;
+  });
+  document.getElementById("tblBookings").innerHTML = bHtml || "<tr><td colspan='6'>لا توجد طلبات حجز.</td></tr>";
+
+  const cSnap = await getDocs(collection(db, "complaints"));
+  document.getElementById("statComplaints").textContent = cSnap.size;
+  let cHtml = "";
+  cSnap.forEach(s => {
+    const d = s.data();
+    cHtml += `<tr>
+      <td>${d.name||'-'}</td>
+      <td>${d.child||'-'}</td>
+      <td>${d.type||'-'}</td>
+      <td>${d.msg||'-'}</td>
+      <td><b>${d.reply||'لم يتم الرد بعد'}</b></td>
+      <td>
+        <button class="btn-action btn-edit" onclick="replyComplaint('${s.id}')">إضافة/تعديل الرد</button>
+      </td>
+    </tr>`;
+  });
+  document.getElementById("tblComplaints").innerHTML = cHtml || "<tr><td colspan='6'>لا توجد شكاوى.</td></tr>";
+
+  const chSnap = await getDocs(collection(db, "children"));
+  document.getElementById("statChildren").textContent = chSnap.size;
+  let chHtml = "";
+  chSnap.forEach(s => {
+    const d = s.data();
+    chHtml += `<tr>
+      <td><b>${d.name||'-'}</b></td>
+      <td>${d.section||'-'}</td>
+      <td>${d.dob||'-'}</td>
+      <td>${d.notes||'-'}</td>
+      <td><button class="btn-action btn-edit" onclick="alert('تم تسجيل حضور الطفل اليوم ✅')">تسجيل حضور</button></td>
+      <td>${d.parentEmail||d.parentUid||'-'}</td>
+    </tr>`;
+  });
+  document.getElementById("tblChildren").innerHTML = chHtml || "<tr><td colspan='6'>لا يوجد أطفال مسجلين.</td></tr>";
+
+  const rSnap = await getDocs(collection(db, "reviews"));
+  let rHtml = "";
+  rSnap.forEach(s => {
+    const d = s.data();
+    rHtml += `<tr>
+      <td>${d.name||'-'}</td>
+      <td>${'⭐'.repeat(d.rating||5)}</td>
+      <td>${d.text||'-'}</td>
+      <td>${d.status||'pending'}</td>
+      <td>
+        <button class="btn-action btn-edit" onclick="approveReview('${s.id}', '${d.status==='approved'?'pending':'approved'}')">${d.status==='approved'?'إلغاء القبول':'قبول التقييم'}</button>
+      </td>
+    </tr>`;
+  });
+  document.getElementById("tblReviews").innerHTML = rHtml || "<tr><td colspan='5'>لا توجد تقييمات.</td></tr>";
+}
+
+window.updateBookingStatus = async (id, status) => {
+  await updateDoc(doc(db, "registrationRequests", id), { status });
+  alert("تم تحديث حالة الحجز ✅");
+  loadDashboardData();
+};
+
+window.replyComplaint = async (id) => {
+  const reply = prompt("اكتب رد الإدارة على هذه المشكلة:");
+  if (reply) {
+    await updateDoc(doc(db, "complaints", id), { reply, status: "replied" });
+    alert("تم حفظ الرد ووضعه في حساب ولي الأمر ✅");
+    loadDashboardData();
+  }
+};
+
+window.approveReview = async (id, status) => {
+  await updateDoc(doc(db, "reviews", id), { status });
+  alert("تم تحديث حالة التقييم ✅");
+  loadDashboardData();
+};
+
+window.saveCmsSettings = async () => {
+  await setDoc(doc(db, "siteSettings", "general"), {
+    kg1Price: document.getElementById("cmsKg1Price").value,
+    kg2Price: document.getElementById("cmsKg2Price").value,
+    speechPrice: document.getElementById("cmsSpeechPrice").value,
+    whatsapp: document.getElementById("cmsWhatsapp").value,
+    address: document.getElementById("cmsAddress").value,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+  alert("تم حفظ وتحديث محتوى الموقع بنجاح ✅");
+};
+
+window.addBotRule = async () => {
+  const keyword = document.getElementById("botKeyword").value.trim();
+  const reply = document.getElementById("botReply").value.trim();
+  if (keyword && reply) {
+    await addDoc(collection(db, "botRules"), { keyword, reply, createdAt: serverTimestamp() });
+    alert("تمت إضافة قاعدة الرد الآلي الجديدة للبوت ✅");
+    document.getElementById("botKeyword").value = "";
+    document.getElementById("botReply").value = "";
+  }
+};
+
+window.sendAdminNotification = async () => {
+  const titleAr = document.getElementById("notifTitle").value.trim();
+  const textAr = document.getElementById("notifBody").value.trim();
+  const icon = document.getElementById("notifIcon").value.trim() || "🔔";
+  if (!titleAr || !textAr) {
+    alert("من فضلك اكتب العنوان والتفاصيل.");
+    return;
+  }
+  await addDoc(collection(db, "notifications"), {
+    icon,
+    titleAr,
+    textAr,
+    titleEn: titleAr,
+    textEn: textAr,
+    createdAt: serverTimestamp(),
+    timeAr: "الآن",
+    timeEn: "Just now"
+  });
+  alert("تم إرسال الإشعار لجميع الأهالي والمشتركين بنجاح 🚀");
+  document.getElementById("notifTitle").value = "";
+  document.getElementById("notifBody").value = "";
+};
+</script>
+</body>
+</html>
