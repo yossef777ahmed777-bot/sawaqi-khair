@@ -364,7 +364,7 @@ function renderAccounts(arr,term){
   let b=document.createElement('div');
   b.id='swaqi-money-box';
   b.style='background:#065f46;color:#fff;padding:15px;border-radius:16px;text-align:center;margin:15px 0';
-  b.innerHTML='<div style="font-size:28px;font-weight:bold"><span id="t1">0</span> جنيه</div><div>اجمالي الاشتراكات</div><div style="font-size:12px">KG1:<span id="c1">0</span> KG2:<span id="c2">0</span> جلسات:<span id="c3">0</span></div>';
+    b.innerHTML='<div style="font-size:28px"><span id="t1">0</span> جنيه</div><div>الاجمالي</div><div>KG1:<span id="c1">0</span> KG2:<span id="c2">0</span> جلسات:<span id="c3">0</span></div>';
   document.body.prepend(b);
   try{
     let s=await getDocs(collection(db,"payments"));
