@@ -1856,5 +1856,28 @@ const extraLanguageMap = {
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
   else init();
 })();
+  <div class="toast-container" id="toastBox"></div>
+<a href="#booking" class="floating-booking-btn">✨ احجز زيارة الآن</a>
+
+<style>
+.floating-booking-btn{position:fixed;bottom:20px;left:20px;z-index:90;background:linear-gradient(135deg,#168a4a,#116b3b);color:#fff;padding:12px 22px;border-radius:999px;font-weight:800;font-size:13.5px;text-decoration:none;box-shadow:0 10px 25px rgba(22,138,74,0.35);display:flex;align-items:center;gap:8px;transition:transform .2s}
+.floating-booking-btn:hover{transform:scale(1.05)}
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px}
+.toast{background:#116b3b;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;box-shadow:0 10px 25px rgba(0,0,0,0.2);animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+</style>
+
+<script>
+function showToast(msg) {
+  const container = document.getElementById("toastBox");
+  if(!container) return;
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+</script>
+
 </script>
 </body></html>
