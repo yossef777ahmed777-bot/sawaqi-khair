@@ -1626,20 +1626,21 @@ function applyLanguage(){
 
   // ترجمة كل النصوص
   document.querySelectorAll("h1,h2,h3,p,span,a,button,div").forEach(el=>{
-    if(el.children.length === 0 && el.innerText.trim()){
-      <script>
+<script>
 let languageMap={
 "عن الحضانة":"About the Nursery",
 "قسم التخاطب":"Speech Department",
 "KG1":"KG1 Department",
-"KG2":"KG2 Department"
+"KG2":"KG2 Department",
+"قسم KG1":"KG1 Department",
+"قسم KG2":"KG2 Department"
 };
 let isEnglish=localStorage.getItem("nursery_lang")==="en";
 function applyLanguage(){
 document.documentElement.dir=isEnglish?"ltr":"rtl";
 let b=document.querySelector(".lang-switch");
 if(b) b.innerText=isEnglish?"🌐 عربي | EN":"🌐 EN | عربي";
-document.querySelectorAll("h2").forEach(el=>{
+document.querySelectorAll("h2,h3").forEach(el=>{
 let t=el.innerText.trim();
 if(languageMap[t]){
 if(!el.dataset.ar) el.dataset.ar=t;
@@ -1662,4 +1663,3 @@ toggleLanguage();
 </script>
 </body>
 </html>
-</body></html>
