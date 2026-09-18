@@ -71,7 +71,7 @@ import{initializeApp}from"https://www.gstatic.com/firebasejs/10.13.2/firebase-ap
 import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import{getFirestore,collection,getDocs,doc,addDoc,updateDoc,deleteDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
-const firebaseConfig={apiKey:"AIzaSyCJOPKsp0tI2yW-6WrWm3pI2P4tcVZNWQ",authDomain:"sawaqi-khair.firebaseapp.com",projectId:"sawaqi-khair",storageBucket:"sawaqi-khair.firebasestorage.app",messagingSenderId:"276356382810",appId:"1:276356382810:web:9b93b95962b83f48cf5863"};
+const firebaseConfig={apiKey:"AIzaSyCJOPKsp0tI2yW-6WrpWm3pI2P4tcVZNWQ",authDomain:"sawaqi-khair.firebaseapp.com",projectId:"sawaqi-khair",storageBucket:"sawaqi-khair.firebasestorage.app",messagingSenderId:"276356382810",appId:"1:276356382810:web:9b93b95962b83f48cf5863"};
 const ADMIN_EMAIL="yossef777ahmed777@gmail.com";
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
