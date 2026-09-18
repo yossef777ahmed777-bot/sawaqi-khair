@@ -1607,23 +1607,22 @@ const languageMap = {
   "بإشراف أخصائيين مؤهلين": "Supervised by qualified specialists",
   "وضع خطة مناسبة": "Creating a suitable plan",
   "احتياج كل طفل": "Each child's needs",
-  "التمارين في المنزل": "Home exercises",
-  "الحروف والأرقام": "Letters and Numbers",
-  "اللعب والرسم": "Play and Drawing",
-  "التفاعل مع الأقران": "Peer Interaction",
-  "تواصل معنا": "Contact Us",
-  "العنوان": "Address"
-
-let isEnglish = localStorage.getItem("nursery_lang")==="en";
+let isEnglish=localStorage.getItem("nursery_lang")==="en";
 let languageMap={
 "عن الحضانة":"About the Nursery",
 "قسم التخاطب":"Speech Department",
 "KG1":"KG1 Department",
 "KG2":"KG2 Department",
 "قسم KG1":"KG1 Department",
-"قسم KG2":"KG2 Department"
-};
-function applyLanguage(){
+"قسم KG2":"KG2 Department",
+"التمارين في المنزل":"Home exercises",
+"الحروف والأرقام":"Letters and Numbers",
+"اللعب والرسم":"Play and Drawing",
+"التفاعل مع الأقران":"Peer Interaction",
+"تواصل معنا":"Contact Us",
+"العنوان":"Address"
+
+  applyLanguage(){
 document.documentElement.dir=isEnglish?"ltr":"rtl";
 document.documentElement.lang=isEnglish?"en":"ar";
 let b=document.querySelector(".lang-switch");
