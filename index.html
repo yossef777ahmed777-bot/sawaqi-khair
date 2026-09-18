@@ -1636,32 +1636,31 @@ function applyLanguage(){
           // احفظ الأصلي
           if(isEnglish &&!el.getAttribute("data-ar-full")) el.setAttribute("data-ar-full", txt);
         }
-      }
-    }
-  });
-  // لو عربي رجع الأصلي
-  if(!isEnglish){
-    document.querySelectorAll("[data-ar-full]").forEach(el=>{
-      el.innerText = el.getAttribute("data-ar-full");
-    });
-  }
+      <script>
+const languageMap = {
+"عن الحضانة":"About the Nursery",
+"قسم التخاطب":"Speech Department",
+"قسم KG1":"KG1 Dept",
+"قسم KG2":"KG2 Dept"
+};
+let isEnglish = localStorage.getItem("nursery_lang")==="en";
+function applyLanguage(){
+document.documentElement.dir = isEnglish?"ltr":"rtl";
+let btn=document.querySelector(".lang-switch");
+if(btn) btn.innerText=isEnglish?"🌐 عربي | EN":"🌐 EN | عربي";
 }
-
 function toggleLanguage(){
-  isEnglish =!isEnglish;
-  localStorage.setItem("nursery_lang", isEnglish? "en" : "ar");
-  location.reload(); // أسهل حل عشان يرجع كل حاجة
+isEnglish=!isEnglish;
+localStorage.setItem("nursery_lang", isEnglish?"en":"ar");
+location.reload();
 }
-
-// شغل اول مرة
 applyLanguage();
-
-// اربط الزرار
-document.addEventListener("click", function(e){
-  if(e.target.classList.contains("lang-switch") || e.target.classList.contains("lang-toggle") || e.target.innerText.includes("عربي") || e.target.innerText.includes("EN")){
-    e.preventDefault();
-    toggleLanguage();
-  }
+document.addEventListener("click",function(e){
+if(e.target.innerText.includes("عربي")||e.target.innerText.includes("EN")){
+e.preventDefault();
+toggleLanguage();
+}
 });
 </script>
+</body></html>
 </body></html>
