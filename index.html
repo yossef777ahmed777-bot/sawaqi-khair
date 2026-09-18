@@ -1635,23 +1635,22 @@ function applyLanguage(){
           if(!el.getAttribute("data-ar")) el.setAttribute("data-ar", ar);
           // احفظ الأصلي
           if(isEnglish &&!el.getAttribute("data-ar-full")) el.setAttribute("data-ar-full", txt);
-        }
       <script>
-const languageMap = {
-"عن الحضانة":"About the Nursery",
-"قسم التخاطب":"Speech Department",
-"قسم KG1":"KG1 Dept",
-"قسم KG2":"KG2 Dept"
+languageMap={
+"عن":"About the Nursery",
+"قسم":"Speech Department",
+"KG1":"KG1 Dept",
+"KG2":"KG2 Dept"
 };
-let isEnglish = localStorage.getItem("nursery_lang")==="en";
+let isEnglish=localStorage.getItem("nursery_lang")==="en";
 function applyLanguage(){
-document.documentElement.dir = isEnglish?"ltr":"rtl";
-let btn=document.querySelector(".lang-switch");
-if(btn) btn.innerText=isEnglish?"🌐 عربي | EN":"🌐 EN | عربي";
+document.documentElement.dir=isEnglish?"ltr":"rtl";
+let b=document.querySelector(".lang-switch");
+if(b) b.innerText=isEnglish?"🌐 عربي | EN":"🌐 EN | عربي";
 }
 function toggleLanguage(){
 isEnglish=!isEnglish;
-localStorage.setItem("nursery_lang", isEnglish?"en":"ar");
+localStorage.setItem("nursery_lang",isEnglish?"en":"ar");
 location.reload();
 }
 applyLanguage();
@@ -1662,5 +1661,5 @@ toggleLanguage();
 }
 });
 </script>
-</body></html>
+
 </body></html>
