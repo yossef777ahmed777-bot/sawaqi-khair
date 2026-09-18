@@ -1595,27 +1595,73 @@ function toggleLanguage(){
     }
   });
 
-  document.querySelectorAll("input, textarea").forEach(el => {
-    if(isEnglish){
-      if(!el.dataset.arPlaceholder) el.dataset.arPlaceholder = el.placeholder || "";
-      const translated = languageMap[(el.placeholder || "").trim()];
-      if(translated) el.placeholder = translated;
-    }else if(el.dataset.arPlaceholder !== undefined){
-      el.placeholder = el.dataset.arPlaceholder;
-      delete el.dataset.arPlaceholder;
-    }
-  });
+  <script>
+// قاموس شامل - بيترجم اي حاجة في الصفحة
+const languageMap = {
+  "سواقي الخير النموذجية": "Sawaqi Al-Khair Model Nursery",
+  "احجز زيارة استكشافية": "Book a Discovery Visit",
+  "عن الحضانة": "About the Nursery",
+  "قسم التخاطب": "Speech Department",
+  "قسم KG1": "KG1 Department",
+  "قسم KG2": "KG2 Department",
+  "بإشراف أخصائيين مؤهلين": "Supervised by qualified specialists",
+  "وضع خطة مناسبة": "Creating a suitable plan",
+  "احتياج كل طفل": "Each child's needs",
+  "التمارين في المنزل": "Home exercises",
+  "الحروف والأرقام": "Letters and Numbers",
+  "اللعب والرسم": "Play and Drawing",
+  "التفاعل مع الأقران": "Peer Interaction",
+  "تواصل معنا": "Contact Us",
+  "العنوان": "Address"
+};
 
-  document.querySelectorAll("select option").forEach(el => {
-    if(isEnglish){
-      if(!el.dataset.arText) el.dataset.arText = el.textContent;
-      const translated = languageMap[el.textContent.trim()];
-      if(translated) el.textContent = translated;
-    }else if(el.dataset.arText !== undefined){
-      el.textContent = el.dataset.arText;
-      delete el.dataset.arText;
+let isEnglish = localStorage.getItem("nursery_lang") === "en";
+
+function applyLanguage(){
+  document.documentElement.dir = isEnglish? "ltr" : "rtl";
+  document.documentElement.lang = isEnglish? "en" : "ar";
+  document.body.classList.toggle("en", isEnglish);
+  const btn = document.querySelector(".lang-switch,.lang-toggle");
+  if(btn) btn.innerText = isEnglish? "🌐 عربي | EN" : "🌐 EN | عربي";
+
+  // ترجمة كل النصوص
+  document.querySelectorAll("h1,h2,h3,p,span,a,button,div").forEach(el=>{
+    if(el.children.length === 0 && el.innerText.trim()){
+      let txt = el.innerText.trim();
+      // دور على الترجمة
+      for(let ar in languageMap){
+        if(txt.includes(ar)){
+          el.innerText = isEnglish? txt.replace(ar, languageMap[ar]) : el.getAttribute("data-ar") || txt;
+          if(!el.getAttribute("data-ar")) el.setAttribute("data-ar", ar);
+          // احفظ الأصلي
+          if(isEnglish &&!el.getAttribute("data-ar-full")) el.setAttribute("data-ar-full", txt);
+        }
+      }
     }
   });
+  // لو عربي رجع الأصلي
+  if(!isEnglish){
+    document.querySelectorAll("[data-ar-full]").forEach(el=>{
+      el.innerText = el.getAttribute("data-ar-full");
+    });
+  }
 }
+
+function toggleLanguage(){
+  isEnglish =!isEnglish;
+  localStorage.setItem("nursery_lang", isEnglish? "en" : "ar");
+  location.reload(); // أسهل حل عشان يرجع كل حاجة
+}
+
+// شغل اول مرة
+applyLanguage();
+
+// اربط الزرار
+document.addEventListener("click", function(e){
+  if(e.target.classList.contains("lang-switch") || e.target.classList.contains("lang-toggle") || e.target.innerText.includes("عربي") || e.target.innerText.includes("EN")){
+    e.preventDefault();
+    toggleLanguage();
+  }
+});
 </script>
 </body></html>
