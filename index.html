@@ -1609,6 +1609,9 @@ const languageMap = {
   "احتياج كل طفل": "Each child's needs",
 let isEnglish=localStorage.getItem("nursery_lang")==="en";
 let languageMap={
+"بإشراف أخصائيين مؤهلين":"Supervised by qualified specialists",
+"وضع خطة مناسبة":"Creating a suitable plan",
+"احتياج كل طفل":"Each child's needs",
 "عن الحضانة":"About the Nursery",
 "قسم التخاطب":"Speech Department",
 "KG1":"KG1 Department",
@@ -1621,9 +1624,8 @@ let languageMap={
 "التفاعل مع الأقران":"Peer Interaction",
 "تواصل معنا":"Contact Us",
 "العنوان":"Address"
-
-  applyLanguage(){
-document.documentElement.dir=isEnglish?"ltr":"rtl";
+};
+function applyLanguage(){
 document.documentElement.lang=isEnglish?"en":"ar";
 let b=document.querySelector(".lang-switch");
 if(b) b.innerText=isEnglish?"🌐 عربي | EN":"🌐 EN | عربي";
