@@ -1,0 +1,78 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "yossef777ahmed777@gmail.com";
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /siteContent/{contentId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /gallery/{galleryId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /paymentRequests/{paymentId} {
+      allow create: if request.auth != null
+        && request.resource.data.parentUid == request.auth.uid;
+      allow read: if isAdmin()
+        || (request.auth != null && resource.data.parentUid == request.auth.uid);
+      allow update, delete: if isAdmin();
+    }
+
+    match /registrationRequests/{requestId} {
+      allow create: if request.auth != null
+        && request.resource.data.parentUid == request.auth.uid;
+      allow read: if isAdmin()
+        || (request.auth != null && resource.data.parentUid == request.auth.uid);
+      allow update, delete: if isAdmin();
+    }
+
+    match /complaints/{complaintId} {
+      allow create: if request.auth != null
+        && request.resource.data.parentUid == request.auth.uid;
+      allow read: if isAdmin()
+        || (request.auth != null && resource.data.parentUid == request.auth.uid);
+      allow update, delete: if isAdmin();
+    }
+
+    match /childUpdates/{updateId} {
+      allow read: if isAdmin()
+        || (request.auth != null && resource.data.parentUid == request.auth.uid);
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.parentUid == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read, create, update: if isAdmin()
+        || (request.auth != null && request.auth.uid == userId);
+      allow delete: if isAdmin();
+    }
+
+    match /children/{childId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
