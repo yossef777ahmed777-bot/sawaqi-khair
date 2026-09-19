@@ -2167,4 +2167,22 @@ window.addEventListener('sawaqi-language-changed', updateStatusBar);
   window.addEventListener('blur', clear);
 })();
 </script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sawaqi-al-khair/service-worker.js')
+        .then(registration => {
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                window.location.reload();
+              }
+            });
+          });
+        });
+    });
+  }
+</script>
+
 </body></html>
