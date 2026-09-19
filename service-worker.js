@@ -1,4 +1,4 @@
-const CACHE_NAME = "sawaqi-al-khair-v4"; // احرص على تغيير الرقم (v4, v5, ...) مع كل تحديث رئيسي ترفعه للموقع
+const CACHE_NAME = "sawaqi-al-khair-v5"; // احرص على تغيير الرقم (v4, v5, ...) مع كل تحديث رئيسي ترفعه للموقع
 const BASE = "/sawaqi-al-khair/";
 
 const CORE = [
